@@ -1,3 +1,11 @@
+apply plugin: 'java'
+
+task hello {
+    doLast {
+        println 'Hello Gradle'
+    }
+}
+
 dependencies {
     compile 'net.dv8tion:JDA:3.0.BETA2_108'
     compile 'com.sedmelluq:lavaplayer:1.1.45'
