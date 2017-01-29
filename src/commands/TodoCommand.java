@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.stream.Collectors;
 
 public class TodoCommand extends Command {

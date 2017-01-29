@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.*;
 import java.util.HashMap;
 
 /**
@@ -119,13 +118,13 @@ public class Database {
             preparedStatements.put(TagCommand.GET_TAGS, conn.prepareStatement("SELECT id, label, content FROM Tags", Statement.RETURN_GENERATED_KEYS));
             preparedStatements.put(TagCommand.REMOVE_TAG, conn.prepareStatement("DELETE FROM Tags WHERE id = ?", Statement.RETURN_GENERATED_KEYS));
 
-            //Statistics
-            preparedStatements.put(Statistics.GET_MESSAGES_RECEIVED, conn.prepareStatement("SELECT messages FROM Messages", Statement.RETURN_GENERATED_KEYS));
-            preparedStatements.put(Statistics.GET_COMMANDS_RUN, conn.prepareStatement("SELECT commands FROM Commands", Statement.RETURN_GENERATED_KEYS));
-            preparedStatements.put(Statistics.EDIT_MESSAGES_RECEIVED, conn.prepareStatement("UPDATE Messages SET messages = ?", Statement.RETURN_GENERATED_KEYS));
-            preparedStatements.put(Statistics.EDIT_COMMANDS_RUN, conn.prepareStatement("UPDATE Commands SET commands = ?", Statement.RETURN_GENERATED_KEYS));
-            preparedStatements.put(Statistics.EDIT_GUILDS_JOINED, conn.prepareStatement("UPDATE Guilds SET guilds = ?", Statement.RETURN_GENERATED_KEYS));
-            preparedStatements.put(Statistics.EDIT_UPTIME, conn.prepareStatement("UPDATE Uptime SET uptime = ?", Statement.RETURN_GENERATED_KEYS));
+//            //Statistics
+//            preparedStatements.put(Statistics.GET_MESSAGES_RECEIVED, conn.prepareStatement("SELECT messages FROM Messages", Statement.RETURN_GENERATED_KEYS));
+//            preparedStatements.put(Statistics.GET_COMMANDS_RUN, conn.prepareStatement("SELECT commands FROM Commands", Statement.RETURN_GENERATED_KEYS));
+//            preparedStatements.put(Statistics.EDIT_MESSAGES_RECEIVED, conn.prepareStatement("UPDATE Messages SET messages = ?", Statement.RETURN_GENERATED_KEYS));
+//            preparedStatements.put(Statistics.EDIT_COMMANDS_RUN, conn.prepareStatement("UPDATE Commands SET commands = ?", Statement.RETURN_GENERATED_KEYS));
+//            preparedStatements.put(Statistics.EDIT_GUILDS_JOINED, conn.prepareStatement("UPDATE Guilds SET guilds = ?", Statement.RETURN_GENERATED_KEYS));
+//            preparedStatements.put(Statistics.EDIT_UPTIME, conn.prepareStatement("UPDATE Uptime SET uptime = ?", Statement.RETURN_GENERATED_KEYS));
         } catch (IOException | InstantiationException | IllegalAccessException | SQLException e) {
             e.printStackTrace();
         }

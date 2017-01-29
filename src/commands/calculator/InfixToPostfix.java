@@ -1,7 +1,5 @@
 package calculator;
 
-import java.util.*;
-
 public class InfixToPostfix {
 
     private static boolean isOperator(char c) {
