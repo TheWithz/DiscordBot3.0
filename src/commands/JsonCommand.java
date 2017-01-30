@@ -1,6 +1,6 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
@@ -137,7 +137,7 @@ public class JsonCommand extends Command {
                 return;
             }
             JSONObject obj = new JSONObject(new String(Files.readAllBytes(Paths.get(args[2]))));
-            BashCommand.runLinuxCommand("rm " + args[2]);
+            commands.BashCommand.runLinuxCommand("rm " + args[2]);
             jsonFiles.remove(args[2]);
             event.getChannel().sendMessage(":white_check_mark: the json file " + args[2] + " was successfully deleted.").queue();
         } catch (IOException e) {
@@ -241,18 +241,4 @@ public class JsonCommand extends Command {
         return "Json Command";
     }
 
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return null;
-    }
 }

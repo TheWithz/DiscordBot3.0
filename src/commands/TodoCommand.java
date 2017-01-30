@@ -1,7 +1,7 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
-import misc.Database;
+import bot.RunBot;
+import commands.util.Database;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.MessageHistory;
 import net.dv8tion.jda.core.entities.Message;
@@ -13,10 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TodoCommand extends Command {
-    //Database Methods
+    //commands.util.Database Methods
     public static final String ADD_TODO_LIST = "addTodoList";
     public static final String ADD_TODO_ENTRY = "addTodoEntry";
     public static final String ADD_TODO_USER = "addTodoUser";
@@ -78,7 +79,7 @@ public class TodoCommand extends Command {
     @Override
     public void onCommand(MessageReceivedEvent e, String[] args) {
         try {
-            RunBot.checkArgs(args, 1, ":x: No Action argument was provided. Please use `" + RunBot.PREFIX + "help " + getAliases().get(0) + "` for more information.", e);
+            RunBot.checkArgs(args, 1, ":x: No Action argument was provided.", e);
 
             switch (args[1].toLowerCase()) {
                 case "show":
@@ -122,8 +123,7 @@ public class TodoCommand extends Command {
                     handleRemove(e, args);
                     break;
                 default:
-                    e.getChannel().sendMessage(":x: Unknown Action argument: `" + args[1] + "` was provided. " +
-                                                       "Please use `" + RunBot.PREFIX + "help " + getAliases().get(0) + "` for more information.").queue();
+                    e.getChannel().sendMessage(":x: Unknown Action argument: `" + args[1] + "` was provided.").queue();
             }
             if (Arrays.asList(args).contains("botfeatures") && args[0].equals(RunBot.PREFIX + "todo")) {
                 refreshTodoChannel(e, args);
@@ -191,75 +191,6 @@ public class TodoCommand extends Command {
     @Override
     public String getName() {
         return "Todo Command";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return Arrays.asList(
-                String.format(
-                        "(%1$s)][Action] <Action Arguments>\n" +
-                                "<Actions:>\n" +
-                                "\n" +
-                                "[show][ListName] - Shows all todo entries in the <ListName> TodoList.\n" +
-                                "[[Example:](%1$s)][show] <shopping-list> would display all entries in the <shopping-list> list.\n" +
-                                "\n" +
-                                "[lists][Mentions...] - Displays the todo lists owned by the provided user(s).\n" +
-                                "[[Example 1:](%1$s)][lists] Displays lists owned by the User that executed the command.\n" +
-                                "[[Example 2:](%1$s)][lists] <@ TheWithz> Displays lists owned by <TheWithz>.\n" +
-                                "\n" +
-                                "[create][ListName] - Creates a new todo list with name <ListName>\n" +
-                                "[[Example:](%1$s)][create] <project5> would create a todo list with the name <project5>\n" +
-                                "\n" +
-                                "[add][ListName] <Content...> - Adds a todo entry to the <ListName> todo list.\n" +
-                                "[Example:](%1$s)][add] <project5> \"Fix bug where Users can delete System32\"\n" +
-                                "\n" +
-                                "[madd][ListName] <Content> <Content> <Content> etc. - Adds multiple entries to the <ListName> todo list.\n" +
-                                "[[Example:](%1$s)][madd] <project5> \"fix house\" \"remove door\" \"eat lunch\"\n" +
-                                "\n" +
-                                "[edit][ListName] <Entry ID> <Content...> - Edits a todo entry from the <ListName> todo list.\n" +
-                                "[[Example:](%1$s)][edit] <project5> <4> \"add more documentation for users of JDA API\"\n" +
-                                "\n" +
-                                "[mark/unmark][TodoList] <Entry Index> - Marks a todo entry as <complete> or <incomplete>.\n" +
-                                "[[Example 1:](%1$s)][mark] <project5> <2> Marks the <second> entry in the <project5> list as <compelted>.\n" +
-                                "[[Example 2:](%1$s)][unmark] <project5> <3> Marks the <third> entry in the <project5> list as <incomplete>.\n" +
-                                "[[Example 3:](%1$s)][mark] <project5> <*> Marks <all> todo entries in the <project5> list as <completed>.\n" +
-                                "<Note:> You can also use <check> and <uncheck>.\n" +
-                                "\n",
-                        getAliases().get(0)),
-
-                //Second Usage Message
-                String.format(
-                        "\n[lock/unlock][ListName] - Used to lock a todo list such that only Auth'd users can modify it.\n" +
-                                "[[Example 1:](%1$s)][lock] <project5> Locks the <project5> list such that only Auth'd users can use <add>,<mark> and <clear>\n" +
-                                "[[Example 2:](%1$s)][unlock] <project5> Unlocks the <project5> list so that all users can modify it.\n" +
-                                "________________________________________________________________________________________________________\n\n" +
-                                "[[users][SubAction]](ListName) <SubAction Args> Used add, remove and list the Auth'd users for a todo list.\n" +
-                                "<SubActions:>\n" +
-                                "\n" +
-                                "[add][ListName] <@ mentions...> Adds the mentions users to the Auth'd users for <ListName> list.\n" +
-                                "[Example:](%1$s)[users](add) <project5> <@ Joe> <@ DudeMan> Adds Joe and DudeMan Auth'd users for the <project5> list.\n\n" +
-                                "[remove][ListName] [@ mentions...] Removes the mentioned users from the Auth'd users for <ListName> list.\n" +
-                                "[Example:](%1$s)[users](remove) <project5> <@ MrCatMan> Removes <MrCatMan> from the Auth'd users for the <project5> list.\n\n" +
-                                "[list][ListName] Lists the Owner and Auth'd users for the <ListName> list.\n" +
-                                "[Example:](%1$s)[users](list) <project5> Lists the owner and all Auth'd users for the <project5> list.\n" +
-                                "________________________________________________________________________________________________________\n" +
-                                "\n" +
-                                "[clear][ListName] - Clears all <completed> todo entries from a list.\n" +
-                                "[[Example:](%1$s)][clear] <project5> Clears all <completed> todo entries in the <project5> list\n" +
-                                "\n" +
-                                "[remove][ListName] - Completely deletes the <ListName> list. Only the list owner can do this.\n" +
-                                "[[Example:](%1$s)][remove] <project5> Completely deletes the <project5> todo list.\n",
-                        getAliases().get(0)));
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return getUsageInstructionsEveryone();
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return getUsageInstructionsOp();
     }
 
     //alias show [ListName]

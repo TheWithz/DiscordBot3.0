@@ -1,10 +1,9 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,13 +16,13 @@ public class SearchCommand extends Command {
 
 //        String filter = null;
 //        switch (args[0]) {
-//            case RunBot.PREFIX + "google":
-//            case RunBot.PREFIX + "g":
+//            case bot.RunBot.PREFIX + "google":
+//            case bot.RunBot.PREFIX + "g":
 //                break;
-//            case RunBot.PREFIX + "wiki":
+//            case bot.RunBot.PREFIX + "wiki":
 //                filter = "wiki";
 //                break;
-//            case RunBot.PREFIX + "urban":
+//            case bot.RunBot.PREFIX + "urban":
 //                filter = "site:urbandictionary.com";
 //                break;
 //            default:
@@ -32,7 +31,7 @@ public class SearchCommand extends Command {
 
         StringBuilder builder = new StringBuilder();
         Arrays.asList(args).forEach(builder::append);
-        e.getChannel().sendMessage(BashCommand.runLinuxCommand("python google.py " + builder.toString()).toString()).queue();
+        e.getChannel().sendMessage(commands.BashCommand.runLinuxCommand("python google.py " + builder.toString()).toString()).queue();
     }
 
     @Override
@@ -50,21 +49,4 @@ public class SearchCommand extends Command {
         return "Search Command";
     }
 
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return Collections.singletonList(String.format("(%1$s)] <Search Terms>\n" +
-                                                               "[Example:](%1$s) <\"who won the cold war\"> This will search the internet with the string literal <\"who won " +
-                                                               "the cold war\"> as a keyword",
-                                                       getAliases().get(0)));
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return getUsageInstructionsEveryone();
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return getUsageInstructionsEveryone();
-    }
 }

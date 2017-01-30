@@ -1,14 +1,13 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
-import misc.Permissions;
+import bot.RunBot;
+import commands.util.Permissions;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,30 +59,7 @@ public class PermissionsCommand extends Command {
 
     @Override
     public String getName() {
-        return "Permissions Management";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return Collections.singletonList(
-                String.format("(%1$s)] <group> <action> <user>\n"
-                                      + "[Groups:][op]\n"
-                                      + "[Actions:][add, remove, list]\n"
-                                      + "[User:][Must be an @Mentioned user]\n"
-                                      + "[Example 1:](%1$s) <op> <add> <@ TheWithz> This would add the user <TheWithz> to the OPs list.\n"
-                                      + "[Example 2:](%1$s) <op> <list> This would list all bot OPs.\n"
-                                      + "NOTE: you can skip <%1$s> and jump straight to the group by using the group alias <%2$s>.\n"
-                                      + "[Example:](%2$s) <remove> <@ BananaPhone>", getAliases().get(0), getAliases().get(2)));
+        return "commands.util.Permissions Management";
     }
 
     private void processOp(MessageReceivedEvent e, String[] args) {

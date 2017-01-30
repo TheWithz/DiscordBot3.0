@@ -1,6 +1,6 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,7 +25,7 @@ public class EvalCommand extends Command {
     public EvalCommand() {
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
         try {
-            engine.eval("var imports = new JavaImporter(java.io, java.lang, java.util);");
+            engine.eval("var imports = new JavaImporter(java.io, java.lang, java.commands.util);");
         } catch (ScriptException e) {
             e.printStackTrace();
         }
@@ -47,13 +48,13 @@ public class EvalCommand extends Command {
             case "java":
             case "groovy":
             case "javascript":
-                handleJava(e, new DiscordAsOutputStream(e.getTextChannel()), args);
+                handleJava(e, new commands.DiscordAsOutputStream(e.getTextChannel()), args);
                 break;
             case "python":
                 handlePython(e, args);
                 break;
             case "thue":
-                handleThue(e, new DiscordAsOutputStream(e.getTextChannel()), args);
+                handleThue(e, new commands.DiscordAsOutputStream(e.getTextChannel()), args);
                 break;
             default:
                 e.getChannel().sendMessage(":x: Unknown Language argument: `" +
@@ -68,7 +69,7 @@ public class EvalCommand extends Command {
         }
     }
 
-    private void handleJava(MessageReceivedEvent e, DiscordAsOutputStream outStream, String[] args) {
+    private void handleJava(MessageReceivedEvent e, commands.DiscordAsOutputStream outStream, String[] args) {
         Thread k = new Thread(() -> {
             RunBot.checkArgs(args, 2, ":x: No code was specified to evaluate. See " + RunBot.PREFIX + "help " + getAliases().get(0), e);
 
@@ -85,11 +86,11 @@ public class EvalCommand extends Command {
             Object value = null;
             try {
                 System.setOut(new PrintStream(outStream));
-                value = shell.evaluate(new StringBuilder().append("import java.util.*;\n")
+                value = shell.evaluate(new StringBuilder().append("import java.commands.util.*;\n")
                                                           .append("import java.math.*;\n")
                                                           .append("import java.net.*;\n")
                                                           .append("import java.io.*;\n")
-                                                          .append("import java.util.concurrent.*;\n")
+                                                          .append("import java.commands.util.concurrent.*;\n")
                                                           .append("import java.time.*;\n")
                                                           .append("import java.lang.*;\n")
                                                           .append(args[2])
@@ -180,7 +181,7 @@ public class EvalCommand extends Command {
         return s;
     }
 
-    private void handleThue(MessageReceivedEvent e, DiscordAsOutputStream outStream, String[] args) {
+    private void handleThue(MessageReceivedEvent e, commands.DiscordAsOutputStream outStream, String[] args) {
         Thread k = new Thread(() -> {
             RunBot.checkArgs(args, 2, ":x: No rules were specified. See " + RunBot.PREFIX + "help " + getAliases().get(0), e);
             RunBot.checkArgs(args, 3, ":x: No content was specified to evaluate. See " + RunBot.PREFIX + "help " + getAliases().get(0), e);
@@ -191,10 +192,10 @@ public class EvalCommand extends Command {
             Object value;
             try {
                 System.setOut(new PrintStream(outStream));
-                value = BashCommand.runLinuxCommand(String.format("python ThueInterpreter.py %1$s:::%2$s %3$s",
-                                                                  args[2].replace(" ", ""),
-                                                                  args[3],
-                                                                  args[4]));
+                value = commands.BashCommand.runLinuxCommand(String.format("python ThueInterpreter.py %1$s:::%2$s %3$s",
+                                                                           args[2].replace(" ", ""),
+                                                                           args[3],
+                                                                           args[4]));
                 System.out.println(":white_check_mark: **Compiled without errors!** \n" + ((value == null) ? "The above code did not return anything." : value));
             } catch (RuntimeException exception) {
                 System.out.println(":no_entry: **Did not compile!**");
@@ -220,25 +221,5 @@ public class EvalCommand extends Command {
     @Override
     public String getName() {
         return "Evaluate Command";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return Collections.singletonList(String.format(
-                "(%1$s) <language> <code> or [Usage:](%1$s) <thue> <rules> <input> <show trace>\n" +
-                        "[Example: 1](%1$s) groovy <return \"\\\"5 + 5 is: \\\" + (5 + 5);\">\n" +
-                        "<This will print: \"5 + 5 is: 10\">\n" +
-                        "[Example: 2](%1$s) thue <\"a=b; b=c; c=d;\"> <\"aaaaabbbbbbbccccccdddddd\"> <false>\n" +
-                        "<This will print: dddddddddddddddddddddddd>", getAliases().get(0)));
     }
 }

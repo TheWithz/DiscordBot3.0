@@ -1,5 +1,4 @@
-package events.commands;
-
+package commands;
 import java.util.ArrayList;
 import java.util.List;
 

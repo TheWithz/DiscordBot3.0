@@ -1,13 +1,11 @@
-package events.commands.generator;
+package commands;
 
-import bots.RunBot;
-import calculator.EvalPostfix;
-import calculator.InfixToPostfix;
-import events.commands.Command;
+import bot.RunBot;
+import commands.calculator.EvalPostfix;
+import commands.calculator.InfixToPostfix;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,22 +31,6 @@ public class CalculatorCommand extends Command {
     @Override
     public String getName() {
         return "Calculator";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return Collections.singletonList(String.format("(%1$s) <Mathematical Expression>\n" +
-                                                               "[Example:](%1$s) <4 + 4 + 4 * 6> This will output 32.", getAliases().get(0)));
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return getUsageInstructionsEveryone();
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return getUsageInstructionsEveryone();
     }
 
     private String calculate(String[] commandArguments) {

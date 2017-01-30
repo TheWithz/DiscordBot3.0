@@ -1,20 +1,16 @@
-package events.commands;
+package commands;
 
-import misc.Permissions;
-import misc.Statistics;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
  * Created by TheWithz on 2/21/16.
  */
 public abstract class Command extends ListenerAdapter {
-    public Permissions.Perm permission = Permissions.Perm.EVERYONE;
 
     public abstract void onCommand(MessageReceivedEvent e, String[] args);
 
@@ -24,28 +20,12 @@ public abstract class Command extends ListenerAdapter {
 
     public abstract String getName();
 
-    public abstract List<String> getUsageInstructionsEveryone();
-
-    public abstract List<String> getUsageInstructionsOp();
-
-    public abstract List<String> getUsageInstructionsOwner();
-
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
         if (e.getMessage().getContent().length() > 0 && containsCommand(e.getMessage())) {
             if (e.isFromType(ChannelType.PRIVATE)) {
-                try {
-                    Statistics.ranCommand(e.getAuthor().getId(), commandArgs(e.getMessage())[0].substring(3));
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
                 onCommand(e, commandArgs(e.getMessage()));
                 return;
-            }
-            try {
-                Statistics.ranCommand(e.getGuild().getId(), commandArgs(e.getMessage())[0].substring(3));
-            } catch (SQLException e1) {
-                e1.printStackTrace();
             }
             onCommand(e, commandArgs(e.getMessage()));
         }
@@ -60,12 +40,8 @@ public abstract class Command extends ListenerAdapter {
     }
 
     private String[] commandArgs(String string) {
-        ArgParse parser = new ArgParse();
+        commands.ArgParse parser = new commands.ArgParse();
         return parser.parse(string);
     }
 
-    public Command registerPermission(Permissions.Perm permission) {
-        this.permission = permission;
-        return this;
-    }
 }

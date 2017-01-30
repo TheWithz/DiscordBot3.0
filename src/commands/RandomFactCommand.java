@@ -1,7 +1,6 @@
-package events.commands.generator;
+package commands;
 
-import bots.RunBot;
-import events.commands.Command;
+import bot.RunBot;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.io.File;
@@ -36,21 +35,6 @@ public class RandomFactCommand extends Command {
         return "Random Fact Command";
     }
 
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return Collections.singletonList(RunBot.PREFIX + "fact");
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return getUsageInstructionsEveryone();
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return getUsageInstructionsEveryone();
-    }
-
     private void generateRandomFact(MessageReceivedEvent e) {
         Scanner scanner = null;
         try {
@@ -58,13 +42,15 @@ public class RandomFactCommand extends Command {
         } catch (FileNotFoundException m) {
             m.printStackTrace();
         }
-        List<String> a = new ArrayList();
-        while (scanner.hasNextLine()) {
-            a.add(scanner.nextLine());
+        ArrayList<String> a = new ArrayList<>();
+        if (scanner != null) {
+            while (scanner.hasNextLine()) {
+                a.add(scanner.nextLine());
+            }
+            int rnum = (int) (a.size() * Math.random());
+            e.getChannel().sendMessage(a.get(rnum)).queue();
+            scanner.close();
         }
-        int rnum = (int) (a.size() * Math.random());
-        e.getChannel().sendMessage(":white_check_mark: " + a.get(rnum)).queue();
-        scanner.close();
     }
 
 }

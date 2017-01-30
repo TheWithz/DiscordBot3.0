@@ -1,12 +1,13 @@
-package misc;
+package commands.util;
 
-import events.commands.TagCommand;
-import events.commands.TodoCommand;
+import commands.TagCommand;
+import commands.TodoCommand;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.*;
 import java.util.HashMap;
 
 /**
@@ -17,12 +18,6 @@ public class Database {
 
     private Connection conn;
     private HashMap<String, PreparedStatement> preparedStatements;
-
-    public static Database getInstance() {
-        if (instance == null)
-            instance = new Database();
-        return instance;
-    }
 
     private Database() {
         try {
@@ -90,7 +85,7 @@ public class Database {
                                             "PRIMARY KEY (id)" +
                                             ")");
 
-            //Permissions
+            //commands.util.Permissions
             preparedStatements.put(Permissions.ADD_OP, conn.prepareStatement("REPLACE INTO Ops (id) VALUES (?)", Statement.RETURN_GENERATED_KEYS));
             preparedStatements.put(Permissions.GET_OPS, conn.prepareStatement("SELECT id FROM Ops", Statement.RETURN_GENERATED_KEYS));
             preparedStatements.put(Permissions.REMOVE_OPS, conn.prepareStatement("DELETE FROM Ops WHERE id = ?", Statement.RETURN_GENERATED_KEYS));
@@ -130,15 +125,21 @@ public class Database {
         }
     }
 
-    public PreparedStatement getStatement(String statementName) {
-        if (!preparedStatements.containsKey(statementName))
-            throw new RuntimeException("The statement: '" + statementName + "' does not exist.");
-        return preparedStatements.get(statementName);
+    public static Database getInstance() {
+        if (instance == null)
+            instance = new Database();
+        return instance;
     }
 
     public static int getAutoIncrement(PreparedStatement executedStatement, int col) throws SQLException {
         ResultSet autoIncrements = executedStatement.getGeneratedKeys();
         autoIncrements.next();
         return autoIncrements.getInt(col);
+    }
+
+    public PreparedStatement getStatement(String statementName) {
+        if (!preparedStatements.containsKey(statementName))
+            throw new RuntimeException("The statement: '" + statementName + "' does not exist.");
+        return preparedStatements.get(statementName);
     }
 }

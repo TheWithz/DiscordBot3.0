@@ -1,14 +1,12 @@
-package events.commands.generator;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;
-import events.commands.Command;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,23 +36,6 @@ public class TranslateCommand extends Command {
     @Override
     public String getName() {
         return "Translate Command";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return Collections.singletonList(String.format("(%1$s)] <Original Language> <Language to change to> <Content...>\n" +
-                                                               "[Example:](%1$s) <English> <Spanish> <\"Hello, my name is John Cena\"> This will return <\"mi nombre es John Cena\">",
-                                                       getAliases().get(0)));
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return getUsageInstructionsOp();
     }
 
     private void generateTranslatedText(MessageReceivedEvent event, String[] commandArguments) {

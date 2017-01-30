@@ -1,6 +1,6 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,7 +32,6 @@ public class BashCommand extends Command {
         return Collections.singletonList(RunBot.PREFIX + "bash");
     }
 
-    // TODO: 2/27/16 fill out override methods
     @Override
     public String getDescription() {
         return "Runs the given arguments as a command in a bash terminal";
@@ -41,24 +40,6 @@ public class BashCommand extends Command {
     @Override
     public String getName() {
         return "Bash Command";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return Collections.singletonList(String.format("(%1$s)] <bash command>\n" +
-                                                               "[Example:](%1$s) <\"touch Hello.txt\"> This will create a file called <Hello.txt> in <%2$s's> working directory",
-                                                       getAliases().get(0),
-                                                       RunBot.BOT.getName()));
     }
 
     public static StringBuilder runLinuxCommand(String com) {

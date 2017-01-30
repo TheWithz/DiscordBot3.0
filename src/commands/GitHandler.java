@@ -1,6 +1,6 @@
-package events;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.kohsuke.github.*;
@@ -22,7 +22,7 @@ public class GitHandler extends ListenerAdapter {
     public GitHandler(String gitApiToken, String gitUserName) {
         try {
             github = new GitHubBuilder().withOAuthToken(gitApiToken, gitUserName).build();
-            discordRepo = github.getMyself().getRepository("DiscordBot");
+            discordRepo = github.getMyself().getRepository("DiscordBot3.0");
             lastCommit = discordRepo.getPushedAt();
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,11 +34,11 @@ public class GitHandler extends ListenerAdapter {
 aa9fd8b Fixed issues when JDA received a create event for a new Private channel. [Austin Keener]
      */
 
-    static void startTimer() {
+    public static void startTimer() {
         timer.schedule(new TimerTask() {
             public void run() {
                 try {
-                    discordRepo = github.getMyself().getRepository("DiscordBot");
+                    discordRepo = github.getMyself().getRepository("DiscordBot3.0");
                     checkCommit();
                     checkPullRequest();
                 } catch (IOException e) {
@@ -63,13 +63,13 @@ aa9fd8b Fixed issues when JDA received a create event for a new Private channel.
             }
             TextChannel textChannel = RunBot.API.getTextChannelById("147169039049949184");
             textChannel.sendMessage(String.format("***%1$s*** / **%2$s** (%3$s) <%4$s>\n`%5$s` %6$s [%7$s]",
-                                                       commit.getAuthor().getLogin(),
-                                                       discordRepo.getName(),
-                                                       branch.getName(),
-                                                       discordRepo.getHtmlUrl(),
-                                                       commit.getSHA1(),
-                                                       commit.getCommitShortInfo().getMessage(),
-                                                       github.getMyself().getName())).queue();
+                                                  commit.getAuthor().getLogin(),
+                                                  discordRepo.getName(),
+                                                  branch.getName(),
+                                                  discordRepo.getHtmlUrl(),
+                                                  commit.getSHA1(),
+                                                  commit.getCommitShortInfo().getMessage(),
+                                                  github.getMyself().getName())).queue();
             lastCommit = discordRepo.getPushedAt();
         }
     }

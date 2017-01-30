@@ -1,6 +1,6 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
+import bot.RunBot;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.io.OutputStream;

@@ -1,7 +1,7 @@
-package events.commands;
+package commands;
 
-import bots.RunBot;
-import misc.Database;
+import bot.RunBot;
+import commands.util.Database;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class TagCommand extends Command {
 
-    //Database Methods
+    //commands.util.Database Methods
     public static final String ADD_TAG = "addTag";
     public static final String EDIT_TAG_LABEL = "editTagLabel";
     public static final String EDIT_TAG_CONTENT = "editTagContent";
@@ -71,7 +71,7 @@ public class TagCommand extends Command {
                     break;
                 default:
                     e.getChannel().sendMessage(":x: Unknown Action argument: `" + args[1] + "` was provided. " +
-                                                            "Please use `" + RunBot.PREFIX + "help " + getAliases().get(0) + "` for more information.").queue();
+                                                       "Please use `" + RunBot.PREFIX + "help " + getAliases().get(0) + "` for more information.").queue();
             }
         } catch (SQLException e1) {
             e.getChannel().sendMessage(":x: An SQL error occurred while processing command.\nError Message: " + e1.getMessage()).queue();
@@ -94,21 +94,6 @@ public class TagCommand extends Command {
     @Override
     public String getName() {
         return "Tag Command";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return null;
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return null;
     }
 
     private void handleShow(MessageReceivedEvent e, String[] args) {
@@ -200,7 +185,7 @@ public class TagCommand extends Command {
                 break;
             default:
                 e.getChannel().sendMessage(":x: Unknown Modifier argument: `" + args[2] + "` was provided. " +
-                                                        "Please use `" + RunBot.PREFIX + "help " + getAliases().get(0) + "` for more information.").queue();
+                                                   "Please use `" + RunBot.PREFIX + "help " + getAliases().get(0) + "` for more information.").queue();
                 break;
         }
 
@@ -213,7 +198,7 @@ public class TagCommand extends Command {
 
         if (tag == null) {
             e.getChannel().sendMessage(":x: Sorry, `" + oldLabel + "` isn't a known tag. " +
-                                                    "Try using `" + getAliases().get(0) + " create " + oldLabel + "` to create a new tag by this name.").queue();
+                                               "Try using `" + getAliases().get(0) + " create " + oldLabel + "` to create a new tag by this name.").queue();
             return;
         }
 
@@ -239,7 +224,7 @@ public class TagCommand extends Command {
 
         if (tag == null) {
             e.getChannel().sendMessage(":x: Sorry, `" + label + "` isn't a known tag. " +
-                                                    "Try using `" + getAliases().get(0) + " create " + label + "` to create a new tag by this name.").queue();
+                                               "Try using `" + getAliases().get(0) + " create " + label + "` to create a new tag by this name.").queue();
             return;
         }
 

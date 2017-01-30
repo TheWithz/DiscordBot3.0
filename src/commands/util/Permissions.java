@@ -1,4 +1,4 @@
-package misc;
+package commands.util;
 
 import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.User;
@@ -17,14 +17,8 @@ public class Permissions {
     public static final String GET_OPS = "getOps";
     public static final String REMOVE_OPS = "removeOp";
 
-    public static final String OP_REQUIRED_MESSAGE = "You do not have permission to run this command! (OP required).";
-
     private static Permissions permissions;
     private ArrayList<String> ops;
-
-    public enum Perm {
-        OP_ONLY, OWNER_ONLY, EVERYONE
-    }
 
     private Permissions() {
         ops = new ArrayList<String>();

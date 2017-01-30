@@ -1,11 +1,9 @@
-package events.commands.generator;
+package commands;
 
-import bots.RunBot;
-import events.commands.Command;
+import bot.RunBot;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,21 +28,6 @@ public class RandomNumberCommand extends Command {
     @Override
     public String getName() {
         return "Random Number Command";
-    }
-
-    @Override
-    public List<String> getUsageInstructionsEveryone() {
-        return Collections.singletonList(RunBot.PREFIX + "rnum <Integer>");
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOp() {
-        return getUsageInstructionsEveryone();
-    }
-
-    @Override
-    public List<String> getUsageInstructionsOwner() {
-        return getUsageInstructionsOp();
     }
 
     private void generateRandomNumber(MessageReceivedEvent e, String[] args) {
