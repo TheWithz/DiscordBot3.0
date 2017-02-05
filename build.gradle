@@ -13,21 +13,26 @@ sourceSets {
     }
 }
 
-mainClassName = 'bot.RunBot'
+mainClassName = 'music.Main'
 
 task execute(type: JavaExec) {
     main = 'bot.RunBot'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-defaultTasks 'execute'
+task music(type: JavaExec) {
+    main = 'music.Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+defaultTasks 'music'
 
 dependencies {
     compile 'net.dv8tion:JDA:3.0.BETA2_108'
     compile 'com.sedmelluq:lavaplayer:1.1.45'
     compile 'com.memetix:microsoft-translator-java-api:0.6.2'
     compile 'mysql:mysql-connector-java:5.1.39'
-    compile 'org.kohsuke:github-api:1.76'
+    //compile 'com.jcabi:jcabi-github:0.29'
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
     compile 'com.google.code.gson:gson:2.6.1'
 }

@@ -33,7 +33,8 @@ public class RunBot {
         try {
             JSONObject obj = new JSONObject(new String(Files.readAllBytes(Paths.get("Config.json"))));
             API = new JDABuilder(AccountType.BOT).setToken(obj.getString("releaseBotToken"))
-                                                 //.addListener(new GitHandler(obj.getString("gitApiToken"), obj.getString("gitUserName")))
+                                                 //.addListener(new GitHandler(obj.getString("gitApiToken")))
+                                                 .addListener(new LoginHandler())
                                                  .addListener(new TranslateCommand())
                                                  .addListener(new CalculatorCommand())
                                                  .addListener(new SearchCommand())
@@ -90,6 +91,7 @@ public class RunBot {
     }
 
     public static boolean OpRequired(MessageReceivedEvent e) {
+        System.out.println(Permissions.getPermissions() == null);
         if (!Permissions.getPermissions().isOp(e.getAuthor())) {
             e.getChannel().sendMessage(RunBot.OP_REQUIRED).queue();
             return true;

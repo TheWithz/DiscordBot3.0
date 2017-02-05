@@ -21,8 +21,7 @@ public class LoginHandler extends ListenerAdapter {
         Permissions.setupPermissions();
         RunBot.BOT = API.getUserById(API.getSelfUser().getId());
         API.getPresence().setGame(Game.of("JDA"));
-        //LeagueHandler.startTimer();
-        GitHandler.startTimer();
+       // GitHandler.startTimer();
         RunBot.OWNER_REQUIRED = ":no_entry: Only " + API.getUserById("122764399961309184").getAsMention() + " can use this command";
         try {
             // add TheWithz as OP
