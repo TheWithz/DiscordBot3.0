@@ -28,8 +28,8 @@ task music(type: JavaExec) {
 defaultTasks 'music'
 
 dependencies {
-    compile 'net.dv8tion:JDA:3.0.BETA2_108'
-    compile 'com.sedmelluq:lavaplayer:1.1.45'
+    compile 'net.dv8tion:JDA:3.0.BETA2_123'
+    compile 'com.sedmelluq:lavaplayer:1.2.1'
     compile 'com.memetix:microsoft-translator-java-api:0.6.2'
     compile 'mysql:mysql-connector-java:5.1.39'
     //compile 'com.jcabi:jcabi-github:0.29'
